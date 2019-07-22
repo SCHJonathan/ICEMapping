@@ -1,0 +1,54 @@
+<!--
+<h1>ID: {{ place.GEOID }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<ul>
+	<li> geoid: {{ place.geoid }} </li>
+    <li> block: {{ place.block }} </li>
+    <li> geography: {{ place.geography }} </li>
+    <li> population: {{ place.population }} </li>
+    <li> white: {{ place.white }} </li>
+    <li> black: {{ place.black }} </li>
+    <li> asian: {{ place.asian }} </li>
+    <li> other: {{ place.otherrace}} </li>
+    <li> male: {{ place.male }} </li>
+    <li> female: {{ place.female }} </li>
+    <li> young: {{ place.young }} </li>
+    <li> middle: {{ place.middle }} </li>
+    <li> old: {{ place.old }} </li>
+</ul>
+
+<h2>Update Demo</h2>
+<form action="{% url 'polls:update' place.id %}" method="POST">
+{% csrf_token %}
+<label>Update Geoid:</label> <br>
+<input type="text" name="updateGeoid"> <br>
+<label>Update Block:</label> <br>
+<input type="text" name="updateBlock"> <br>
+<label>Update Geography:</label> <br>
+<input type="text" name="updateGeography"> <br>
+<label>Update Population:</label> <br>
+<input type="text" name="updatePopulation"> <br>
+<label>Update White:</label> <br>
+<input type="text" name="updateWhite"> <br>
+<label>Update Black:</label> <br>
+<input type="text" name="updateBlack"> <br>
+<label>Update Asian:</label> <br>
+<input type="text" name="updateAsian"> <br>
+<label>Update Other:</label> <br>
+<input type="text" name="updateOther"> <br>
+<label>Update Male:</label> <br>
+<input type="text" name="updateMale"> <br>
+<label>Update Female:</label> <br>
+<input type="text" name="updateFemale"> <br>
+<label>Update Young:</label> <br>
+<input type="text" name="updateYoung"> <br>
+<label>Update Middle:</label> <br>
+<input type="text" name="updateMiddle"> <br>
+<label>Update Old:</label> <br>
+<input type="text" name="updateOld"> <br>
+<br>
+<input type="submit" value="submit">
+</form>
+-->
+<!--<a href="{% url 'polls:index' %}">Back to main page</a> -->

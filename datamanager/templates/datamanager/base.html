@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="{% static 'datamanager/style.css' %}">
+    </head>
+    <body class="pageBody">
+
+        <header class="main_header">
+            <div class="overlay">
+                <h1>Interactive Community Environment Mapping</h1>
+                <h3>By team AWSL</h3>
+                <p>A website to help you find the most suitable community in UIUC by providing detailed information of the block and the platform to rate and share your personal experience about your community.</p>
+                    {% block login %}
+                    {% endblock %}
+            </div>
+        </header>
+        <div class="content">
+            {% block content %}
+            {% endblock content %}    
+        </div>
+    </body>
+</html>

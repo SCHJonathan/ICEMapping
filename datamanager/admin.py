@@ -1,4 +1,4 @@
 from django.contrib import admin
+from .models import Tidychampaign
 
-# Register your models here.
 admin.site.register(Tidychampaign)

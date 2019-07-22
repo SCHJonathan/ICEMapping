@@ -1,0 +1,25 @@
+{% extends 'datamanager/base.html' %}
+
+{% block title %}Iteractive Community Envrionment Mapping{% endblock %}
+{% block login %}
+    {% if user.is_authenticated %}
+        <h2>Hi {{ user.username }}!</h2>
+        <button>Logout</button>
+    {% else %}
+        <br>
+        <button>Login</button>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h2>All records:</h2>
+    {% if all_list %}
+        <ul>
+        {% for place in all_list %}
+            <li><a href="{% url 'polls:detail' place.geoid %}">{{ place.geoid }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No datas are available.</p>
+    {% endif %}
+{% endblock content %}
