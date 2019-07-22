@@ -12,14 +12,8 @@
 {% endblock %}
 
 {% block content %}
-    <h2>All records:</h2>
-    {% if all_list %}
-        <ul>
-        {% for place in all_list %}
-            <li><a href="{% url 'polls:detail' place.geoid %}">{{ place.geoid }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No datas are available.</p>
-    {% endif %}
+    <div class='iteractiveMap'>
+        <h2>Iteractive Map</h2>
+        <img src="../../static/datamanager/champaign.jpg">
+    </div>
 {% endblock content %}

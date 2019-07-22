@@ -8,7 +8,9 @@
             For some mysteries reason, if I use the django syntax for linking CSS file, I cannot get css updated everytime.
             Therefore, I hardcode the CSS file path and hope somebody can get me out of this deadlock.
         -->
-        <link rel="stylesheet" type="text/css" href="../../static/datamanager/style.css">
+        <link rel="stylesheet" type="text/css" href="../../static/datamanager/style.css?{% now "U" %}">
+        
+        <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     </head>
     <body class="pageBody">
 

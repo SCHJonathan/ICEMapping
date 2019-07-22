@@ -150,7 +150,6 @@ class Tidychampaign(models.Model):
 class User(models.Model):
     username = models.CharField(db_column='Username', max_length=10, blank=False, null=False, primary_key=True)
     password = models.CharField(db_column='Password', max_length=10, blank=False, null=False)
-    avatar = models.FileField(db_column='Avatar', upload_to='images/', null=True, verbose_name="")
 
     def __str__(self):
         return self.username + ": " + str(self.avatar)
