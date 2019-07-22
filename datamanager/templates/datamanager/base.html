@@ -4,7 +4,11 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="{% static 'datamanager/style.css' %}">
+        <!-- 
+            For some mysteries reason, if I use the django syntax for linking CSS file, I cannot get css updated everytime.
+            Therefore, I hardcode the CSS file path and hope somebody can get me out of this deadlock.
+        -->
+        <link rel="stylesheet" type="text/css" href="../../static/datamanager/style.css">
     </head>
     <body class="pageBody">
 
@@ -17,9 +21,18 @@
                     {% endblock %}
             </div>
         </header>
+
         <div class="content">
             {% block content %}
             {% endblock content %}    
         </div>
+
+        <footer class="site-footer">
+            <div class="end-line">
+                <h6>Hope it makes you life easier!</h6>
+            </div>  
+            <p class="end-line-group">Maked by AWSL group</p>
+        </footer>
+
     </body>
 </html>
