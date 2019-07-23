@@ -4,6 +4,14 @@
 This project's database is using the latest ```tidychampaign.csv``` and ```geo.csv``` file uploaded by Han Bro.
 If you have the conflict, go to sql workbench, drop the table, and reimport the ```tidychampaign.csv```. It should solve the database conflict later on.
 
+## Prerequsite 
+
+I used the ```crispy form``` package. 
+
+``` bash
+pip install django-crispy-forms
+```
+
 ## Integration steps:
 To integrate this project, run the following command:
 

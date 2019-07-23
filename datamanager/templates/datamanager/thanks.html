@@ -1,0 +1,20 @@
+{% extends 'datamanager/base.html' %}
+
+{% block title %}Thank you!{% endblock %}
+
+{% block link %}
+{% endblock link %} 
+
+{% block login %}
+    <h2>Thank you!</h2>
+{% endblock %}
+
+{% block content %}
+    <div class="ThanksContent">
+        <h2>Thank you for helping us!!</h2>
+        <form action="{% url 'datamanager:index' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Back to main page</button>
+        </form>    
+    </div>
+{% endblock %}

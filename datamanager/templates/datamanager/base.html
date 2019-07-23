@@ -4,14 +4,17 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <meta charset="utf-8" />
-        <!-- 
-            For some mysteries reason, if I use the django syntax for linking CSS file, I cannot get css updated everytime.
-            Therefore, I hardcode the CSS file path and hope somebody can get me out of this deadlock.
-        -->
+        <!-- My CSS file -->
         <link rel="stylesheet" type="text/css" href="../../static/datamanager/style.css?{% now "U" %}">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <!-- CSS and JS file for crispy form package -->
+        {% block link %}
+        {% endblock link %} 
+        
+        <!-- font file -->
         <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     </head>
+    
     <body class="pageBody">
 
         <header class="main_header">

@@ -146,3 +146,15 @@ class Tidychampaign(models.Model):
     class Meta:
         managed = False
         db_table = 'tidychampaign'
+
+class UserInfo(models.Model):
+    username = models.CharField(max_length=20)
+    email = models.EmailField(blank=True)
+    race = models.CharField(max_length=20)
+    geoid = models.BigIntegerField()
+    gender = models.CharField(max_length=20)
+    age = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'UserInfo'

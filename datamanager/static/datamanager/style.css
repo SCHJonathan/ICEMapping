@@ -162,6 +162,28 @@ body{
     margin-bottom: 10px;
     box-shadow: 0 3px 20px 0 #0000003b;
 }
+
+.ThanksContent {
+    text-align: center;
+}
+
+.ThanksContent h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.ThanksContent button {
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: #333;
+    background: #fff;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 20px 0 #0000003b;
+}
+
 .main_header button:hover{
     cursor: pointer;
 }
@@ -180,6 +202,8 @@ body{
   font-size:15px;
   line-height:24px;
   color:#737373;
+  position: absolute;
+  width: 100%;
 }
 
 .site-footer h6
@@ -201,21 +225,21 @@ body{
     text-align: center;
 }
 
-.iteractiveMap h2 {
+.interactiveMap h2 {
     font-family: 'Raleway', sans-serif;
     font-size: 30px;
     text-align: center;
     padding-bottom: 20px;
 }
 
-.iteractiveMap h2 {
+.interactiveMap h2 {
     font-family: 'Raleway', sans-serif;
     font-size: 30px;
     text-align: center;
     padding-bottom: 20px;
 }
 
-.iteractiveMap img {
+.interactiveMap img {
     width: 100%;
     margin: 10px;
 }

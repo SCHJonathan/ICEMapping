@@ -9,7 +9,7 @@
                 {% csrf_token %}
                 <button type="submit">Logout</button>
             </form>
-            <form action="{% url 'datamanager:newdata' user.username %}" method="POST">
+            <form action="{% url 'datamanager:newdata' user.username %}" method="GET">
                 {% csrf_token %}
                 <button type="submit">Provide data</button>
             </form>    
@@ -23,8 +23,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class='iteractiveMap'>
-        <h2>Iteractive Map</h2>
+    <div class='interactiveMap'>
+        <h2>Interactive Map</h2>
         <img src="../../static/datamanager/champaign.jpg">
     </div>
 {% endblock content %}
