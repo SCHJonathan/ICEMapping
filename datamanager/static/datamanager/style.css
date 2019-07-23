@@ -219,3 +219,21 @@ body{
     width: 100%;
     margin: 10px;
 }
+
+.container li {
+    margin-left: 20px;
+}
+
+.panel-heading {
+    text-align: center;
+}
+
+.buttomWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.login 
+{
+    text-align: center;
+}
