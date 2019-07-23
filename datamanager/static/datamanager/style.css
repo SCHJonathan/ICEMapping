@@ -159,7 +159,7 @@ body{
     border-radius: 50px;
     color: #333;
     background: #fff;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     box-shadow: 0 3px 20px 0 #0000003b;
 }
 .main_header button:hover{
@@ -222,6 +222,7 @@ body{
 
 .container li {
     margin-left: 20px;
+    list-style-position: inside
 }
 
 .panel-heading {

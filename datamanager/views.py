@@ -29,6 +29,13 @@ def logout_request(request):
     logout(request)
     return redirect("datamanager:index")
 
+def newdata(request, username):
+    template = loader.get_template('datamanager/newdata.html')
+    context = {
+        'username' : username,
+    }
+    return HttpResponse(template.render(context, request))
+
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('datamanager/login')

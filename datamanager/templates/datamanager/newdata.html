@@ -1,0 +1,24 @@
+{% extends 'datamanager/base.html' %}
+
+{% block title %}Iteractive Community Envrionment Mapping{% endblock %}
+{% block login %}
+    {% if username %}
+        <h2>Hi {{ user.username }}!</h2>
+        <form action="{% url 'datamanager:logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <form action="{% url 'datamanager:login' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Login</button>
+        </form>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class='newDataForm'>
+        <h2>Provide new data form:</h2>
+        <p> need to be updated </p>
+    </div>
+{% endblock content %}
