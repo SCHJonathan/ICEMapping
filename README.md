@@ -4,10 +4,12 @@
 1. This project's database is using the latest ```tidychampaign.csv``` and ```geo.csv``` file uploaded by Han Bro.
 If you have the conflict, go to sql workbench, drop the table, and reimport the ```tidychampaign.csv```. It should solve the database conflict later on.
 
-2. I used the ```crispy form``` package for the 'Provide data form'. Please install it:
+2. There is a list of new package I used to build this website. Please install those:
 
 ``` bash
 pip install django-crispy-forms
+pip install django-bootstrap-pagination
+pip install django-bootstrap-toolkit
 ```
 
 ## Integration steps:
