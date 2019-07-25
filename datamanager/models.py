@@ -5,8 +5,8 @@
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+import uuid
 from django.db import models
-
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -148,7 +148,7 @@ class Tidychampaign(models.Model):
         db_table = 'tidychampaign'
 
 class UserInfo(models.Model):
-    username = models.CharField(max_length=20)
+    username = models.CharField(max_length=20, primary_key=True)
     email = models.EmailField(blank=True)
     race = models.CharField(max_length=20)
     geoid = models.BigIntegerField()
@@ -158,3 +158,13 @@ class UserInfo(models.Model):
     class Meta:
         managed = False
         db_table = 'UserInfo'
+
+class CommentDB(models.Model):
+    username = models.TextField(db_column='Username', blank=False, null=False)  # Field name made lowercase.
+    geoid = models.CharField(max_length=20, db_column='GEOID', blank=False, null=False)  # Field name made lowercase.
+    rate = models.IntegerField(db_column='Rate', blank=True, null=True)  # Field name made lowercase.
+    comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'commentdb'

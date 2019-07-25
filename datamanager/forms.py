@@ -26,6 +26,15 @@ Age = (
     ('NA', 'Prefer not to answer')
 )
 
+RATE = (
+    ('', 'Choose...'),
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+)
+
 
 class UserInfoForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
@@ -51,5 +60,18 @@ class UserInfoForm(forms.Form):
                 Column('gender', css_class='form-group col-md-2 mb-0'),
                 css_class='form-row'
             ),
+            Submit('submit', 'Submit')
+        )
+
+class CommentForm(forms.Form):
+    rate = forms.ChoiceField(choices=RATE)
+    comment = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Leave your comment: '}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            'rate',
+            'comment',
             Submit('submit', 'Submit')
         )

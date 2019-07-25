@@ -8,8 +8,8 @@ from django.http import Http404
 from django.urls import reverse, reverse_lazy
 from django.db import connection
 from django.views import generic
-from .models import Tidychampaign, UserInfo
-from .forms import UserInfoForm
+from .models import Tidychampaign, UserInfo, CommentDB
+from .forms import UserInfoForm, CommentForm
 
 def index(request):
     template = loader.get_template('datamanager/index.html')
@@ -18,12 +18,76 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def detail(request, geoid):
-    place = get_object_or_404(Tidychampaign, pk=geoid)
-    return render(request, 'datamanager/detail.html', {'place': place})
+    if request.method == "GET":
+        list_comment = []
+        username = request.user.username
+        template = loader.get_template('datamanager/detail.html')
+        place = get_object_or_404(Tidychampaign, pk=geoid)
 
-def results(request, geoid):
-    place = get_object_or_404(Tidychampaign, pk=geoid)
-    return render(request, 'datamanager/results.html', {'place': place})
+        commentQuery = """\
+                   SELECT * 
+                   FROM CommentDB 
+                   WHERE GEOID = %s AND Username = '%s';
+                   """
+        with connection.cursor() as cursor:
+                cursor.execute(commentQuery % (geoid, username))
+                list_comment = cursor.fetchall()
+
+        form = CommentForm()
+        context = {
+            'record' : place,
+            'form' : form,
+            'comments' : list_comment,
+        }
+        return HttpResponse(template.render(context, request))
+
+    else:
+        form = CommentForm(request.POST)
+        emptyFrom = CommentForm()
+        template = loader.get_template('datamanager/detail.html')
+        place = get_object_or_404(Tidychampaign, pk=geoid)
+        rate = 0
+        list_comment = []
+
+        if form.is_valid():
+            username = request.user.username
+            rate = form['rate'].value()
+            comment = form['comment'].value()
+
+            commentQuery = """\
+                       SELECT * 
+                       FROM CommentDB 
+                       WHERE GEOID = %s AND Username = '%s';
+                       """
+
+            insertQuery = """\
+                        INSERT INTO CommentDB(GEOID, Username, Rate, Comment)
+                        VALUES (%s, '%s', %s, '%s');
+                        """
+            with connection.cursor() as cursor:
+                cursor.execute(insertQuery % (geoid, username, rate, comment))
+                cursor.execute(commentQuery % (geoid, username))
+                list_comment = cursor.fetchall()
+            
+
+        context = {
+            'record' : place,
+            'form' : emptyFrom,
+            'comments' : list_comment,
+        }
+        return HttpResponse(template.render(context, request))
+
+def deleteComment(request, geoid, context):
+    username = request.user.username
+
+    deleteQuery = """\
+                DELETE FROM CommentDB
+                WHERE GEOID = %s AND Username = '%s' AND Comment = '%s';
+                """
+    with connection.cursor() as cursor:
+        cursor.execute(deleteQuery % (geoid, username, context))
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def logout_request(request):
     logout(request)
@@ -76,7 +140,6 @@ def datalist(request):
     context = {
         'records' : show_records,
     }
-    # return render_to_response('datamanager/datalist.html', RequestContext(request, {'records': show_records,}))
     return HttpResponse(template.render(context, request))
 
 class SignUp(generic.CreateView):

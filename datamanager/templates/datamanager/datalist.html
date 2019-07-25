@@ -26,7 +26,7 @@
         </tr>
         {% for record in records %}
             <tr>
-                <td><p>{{ record.geoid }}</p></td>
+                <td><a href="{% url 'datamanager:detail' record.geoid %}">{{ record.geoid }}</a></td>
                 <td><p>{{ record.block }}</p></td>
                 <td><p>{{ record.population }}</p></td>
             </tr>

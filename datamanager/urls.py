@@ -11,5 +11,5 @@ urlpatterns = [
     path('<str:username>/newdata/', views.newdata, name='newdata'),
     path('datalist/', views.datalist, name='datalist'),
     path('<int:geoid>/', views.detail, name='detail'),
-    path('<int:geoid>/results/', views.results, name='results'),
+    path('<int:geoid>/deleteComment/<str:context>', views.deleteComment, name='deleteComment'),
 ]

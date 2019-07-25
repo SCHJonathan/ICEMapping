@@ -253,7 +253,7 @@ body{
     text-align: center;
 }
 
-.buttomWrapper {
+.buttonWrapper {
     display: flex;
     justify-content: center;
 }
