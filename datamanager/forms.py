@@ -35,7 +35,8 @@ RATE = (
     ('5', '5'),
 )
 
-
+#   Forms for user to filled out. I use the 'crispy_forms' API to beautify the form. 
+#   You can google this API to see how it works and use their documentation as reference.
 class UserInfoForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))

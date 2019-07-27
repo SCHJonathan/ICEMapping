@@ -8,15 +8,26 @@ from django.http import Http404
 from django.urls import reverse, reverse_lazy
 from django.db import connection
 from django.views import generic
-from .models import Tidychampaign, UserInfo, CommentDB
+from .models import Tidychampaign, CommentDB
 from .forms import UserInfoForm, CommentForm
 
+
+#   Straightforward function. 
 def index(request):
     template = loader.get_template('datamanager/index.html')
     context = {
     }
     return HttpResponse(template.render(context, request))
 
+
+#   This is a very important function which might be changed several time in the future. 
+#   This function handle nearly all request for the detail page for a data record.
+#   
+#   It handles: 1) listing all attribute for that record in Tidychampaign database
+#               2) display all the comments from current logged-in user towards this data record.
+#               3) display the form for user to write a new comment or provide the UI for user to manage their
+#                  comments
+#   Feel free to add additional features if you want.
 def detail(request, geoid):
     if request.method == "GET":
         list_comment = []
@@ -77,6 +88,9 @@ def detail(request, geoid):
         }
         return HttpResponse(template.render(context, request))
 
+
+#   This function is used to handled the request when user want to delete one of their comment.
+#   I think this function is working very well. Feel free to change it if you find any bugs.
 def deleteComment(request, geoid, context):
     username = request.user.username
 
@@ -93,6 +107,19 @@ def logout_request(request):
     logout(request)
     return redirect("datamanager:index")
 
+
+#   This function is for user provide their data (race, gender, location, etc.) to our database. 
+#   User provide their data via fill out a form. You can go to forms.py and take a look at UserInfoForm
+#   function to have a better look.
+#
+#   The function here is just a first draft. Here are some potential improvements you can make:
+#   1. The query for updating Tidychampaign database is very bad.
+#           * It doesn't handle the case when user choose 'Prefer not to answer' option.
+#           * Each user should only upload their data once. This query doesn't handle this case
+#   2. Since we want each user can only update the query once, it would be nice if we can implement the 
+#      feature that after the user filled out the form once, it will display 'Thank you for your contribution! 
+#      You have filled out this form before!' (or stuff like this). We don't want a single user update the database
+#      multiple times.
 def newdata(request, username):
     if request.method == "GET":
         template = loader.get_template('datamanager/newdata.html')
@@ -111,13 +138,15 @@ def newdata(request, username):
             gender = form['gender'].value()
             geoid = form['geoid'].value()
 
+            place = get_object_or_404(Tidychampaign, pk=geoid)
+
             query = """\
                 UPDATE Tidychampaign
-                SET %s = %s + 1, %s = %s + 1, %s = %s + 1
+                SET %s = %s + 1, %s = %s + 1, %s = %s + 1, %s = %s + 1
                 WHERE GEOID = %s;
                 """
             with connection.cursor() as cursor:
-                 cursor.execute(query % (age, age, race, race, gender, gender, geoid))
+                 cursor.execute(query % (age, age, race, race, gender, gender, "Population", "Population", geoid))
 
         template = loader.get_template('datamanager/thanks.html')
         context = {
@@ -125,6 +154,9 @@ def newdata(request, username):
         }
     return HttpResponse(template.render(context, request))
 
+
+#   This function is for listing all data record in our database. As you can see, I use the 'paginator' API for 
+#   this feature. If you are not familiar with this API, you can google it and see the documentation for reference.
 def datalist(request):
     username = request.user.username
     records = Tidychampaign.objects.order_by("geoid")
@@ -142,6 +174,8 @@ def datalist(request):
     }
     return HttpResponse(template.render(context, request))
 
+#   I am using django built-in login-logout interface, which is legit enough so I think currently there is no need to change
+#   this function.
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('datamanager/login')
