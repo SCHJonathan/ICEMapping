@@ -228,12 +228,6 @@ def logout_request(request):
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
-<<<<<<< Updated upstream
     success_url = reverse_lazy('datamanager:login')
     template_name = 'datamanager/signup.html'
-    # form_class = AuthenticationForm
 
-=======
-    success_url = reverse_lazy('login')
-    template_name = 'datamanager/signup.html'
->>>>>>> Stashed changes
