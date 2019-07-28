@@ -172,6 +172,14 @@ def datalist(request):
 
 #   This function is for handling the request for the recommandation
 #   system.
+
+#
+#   This function is also incomplete.
+#   1. I also don't handle the 'Prefer not to answer' edge cases.
+#   2. As you can see from the query, it just sorts the table based on age, 
+#      race, gender and then join three table. Han Bro will use some 
+#      machine learning models to implement a better way to give user 
+#      recommandation. We need to integrate that.
 def recommandation(request):
     if request.method == "GET":
         template = loader.get_template('datamanager/recommandation.html')
