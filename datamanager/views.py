@@ -12,7 +12,7 @@ from .models import Tidychampaign, CommentDB
 from .forms import UserInfoForm, CommentForm, recommandationForm
 
 
-#   Straightforward function. 
+#   Straightforward function.
 def index(request):
     template = loader.get_template('datamanager/index.html')
     context = {
@@ -20,9 +20,9 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-#   This is a very important function which might be changed several time in the future. 
+#   This is a very important function which might be changed several time in the future.
 #   This function handle nearly all request for the detail page for a data record.
-#   
+#
 #   It handles: 1) listing all attribute for that record in Tidychampaign database
 #               2) display all the comments from current logged-in user towards this data record.
 #               3) display the form for user to write a new comment or provide the UI for user to manage their
@@ -36,8 +36,8 @@ def detail(request, geoid):
         place = get_object_or_404(Tidychampaign, pk=geoid)
 
         commentQuery = """\
-                   SELECT * 
-                   FROM CommentDB 
+                   SELECT *
+                   FROM CommentDB
                    WHERE GEOID = %s AND Username = '%s';
                    """
         with connection.cursor() as cursor:
@@ -66,8 +66,8 @@ def detail(request, geoid):
             comment = form['comment'].value()
 
             commentQuery = """\
-                       SELECT * 
-                       FROM CommentDB 
+                       SELECT *
+                       FROM CommentDB
                        WHERE GEOID = %s AND Username = '%s';
                        """
 
@@ -79,7 +79,7 @@ def detail(request, geoid):
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
                 cursor.execute(commentQuery % (geoid, username))
                 list_comment = cursor.fetchall()
-            
+
 
         context = {
             'record' : place,
@@ -104,7 +104,7 @@ def deleteComment(request, geoid, context):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-#   This function is for user provide their data (race, gender, location, etc.) to our database. 
+#   This function is for user provide their data (race, gender, location, etc.) to our database.
 #   User provide their data via fill out a form. You can go to forms.py and take a look at UserInfoForm
 #   function to have a better look.
 #
@@ -112,8 +112,8 @@ def deleteComment(request, geoid, context):
 #   1. The query for updating Tidychampaign database is very bad.
 #           * It doesn't handle the case when user choose 'Prefer not to answer' option.
 #           * Each user should only upload their data once. This query doesn't handle this case
-#   2. Since we want each user can only update the query once, it would be nice if we can implement the 
-#      feature that after the user filled out the form once, it will display 'Thank you for your contribution! 
+#   2. Since we want each user can only update the query once, it would be nice if we can implement the
+#      feature that after the user filled out the form once, it will display 'Thank you for your contribution!
 #      You have filled out this form before!' (or stuff like this). We don't want a single user update the database
 #      multiple times.
 def newdata(request, username):
@@ -127,8 +127,7 @@ def newdata(request, username):
     else:
         form = UserInfoForm(request.POST)
         if form.is_valid():
-            username = form['username'].value()
-            email = form['email'].value()
+
             age = form['age'].value()
             race = form['race'].value()
             gender = form['gender'].value()
@@ -151,7 +150,7 @@ def newdata(request, username):
     return HttpResponse(template.render(context, request))
 
 
-#   This function is for listing all data record in our database. As you can see, I use the 'paginator' API for 
+#   This function is for listing all data record in our database. As you can see, I use the 'paginator' API for
 #   this feature. If you are not familiar with this API, you can google it and see the documentation for reference.
 def datalist(request):
     username = request.user.username
@@ -207,8 +206,8 @@ def recommandation(request):
                      (SELECT *
                       FROM Tidychampaign
                       ORDER BY %s DESC LIMIT 10) AS GenderRank
-                WHERE AgeRank.GEOID = RaceRank.GEOID 
-                      AND 
+                WHERE AgeRank.GEOID = RaceRank.GEOID
+                      AND
                       GenderRank.GEOID = RaceRank.GEOID
                 """
             with connection.cursor() as cursor:
@@ -229,7 +228,12 @@ def logout_request(request):
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
+<<<<<<< Updated upstream
     success_url = reverse_lazy('datamanager:login')
     template_name = 'datamanager/signup.html'
     # form_class = AuthenticationForm
 
+=======
+    success_url = reverse_lazy('login')
+    template_name = 'datamanager/signup.html'
+>>>>>>> Stashed changes
