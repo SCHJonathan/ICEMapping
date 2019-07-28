@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
@@ -221,14 +221,15 @@ def recommandation(request):
         return HttpResponse(template.render(context, request))
 
 
-#   I am using django built-in login-logout interface, which is legit enough so I think currently there is no need to change
-#   this function.
+#   I am using django built-in login-logout interface, which is legit enough so I think 
+#   currently there is no need to change this function.
 def logout_request(request):
     logout(request)
     return redirect("datamanager:index")
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy('datamanager/login')
+    success_url = reverse_lazy('datamanager:login')
     template_name = 'datamanager/signup.html'
+    # form_class = AuthenticationForm
 
