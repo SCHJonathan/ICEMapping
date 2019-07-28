@@ -76,3 +76,21 @@ class CommentForm(forms.Form):
             'comment',
             Submit('submit', 'Submit')
         )
+
+class recommandationForm(forms.Form):
+    race = forms.ChoiceField(choices=RACE)
+    gender = forms.ChoiceField(choices=GENDER)
+    age = forms.ChoiceField(choices=Age)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column('age', css_class='form-group col-md-6 mb-0'),
+                Column('race', css_class='form-group col-md-4 mb-0'),
+                Column('gender', css_class='form-group col-md-2 mb-0'),
+                css_class='form-row'
+            ),
+            Submit('submit', 'Submit')
+        )

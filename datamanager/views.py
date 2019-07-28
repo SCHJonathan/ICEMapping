@@ -9,7 +9,7 @@ from django.urls import reverse, reverse_lazy
 from django.db import connection
 from django.views import generic
 from .models import Tidychampaign, CommentDB
-from .forms import UserInfoForm, CommentForm
+from .forms import UserInfoForm, CommentForm, recommandationForm
 
 
 #   Straightforward function. 
@@ -103,10 +103,6 @@ def deleteComment(request, geoid, context):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-def logout_request(request):
-    logout(request)
-    return redirect("datamanager:index")
-
 
 #   This function is for user provide their data (race, gender, location, etc.) to our database. 
 #   User provide their data via fill out a form. You can go to forms.py and take a look at UserInfoForm
@@ -174,9 +170,57 @@ def datalist(request):
     }
     return HttpResponse(template.render(context, request))
 
+#   This function is for handling the request for the recommandation
+#   system.
+def recommandation(request):
+    if request.method == "GET":
+        template = loader.get_template('datamanager/recommandation.html')
+        form = recommandationForm()
+        context = {
+            'form' : form,
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        form = recommandationForm(request.POST)
+        record_list = []
+        if form.is_valid():
+            age = form['age'].value()
+            race = form['race'].value()
+            gender = form['gender'].value()
+
+            query = """\
+                SELECT *
+                FROM (SELECT *
+                      FROM Tidychampaign
+                      ORDER BY %s DESC LIMIT 10) AS AgeRank,
+                     (SELECT *
+                      FROM Tidychampaign
+                      ORDER BY %s DESC LIMIT 10) AS RaceRank,
+                     (SELECT *
+                      FROM Tidychampaign
+                      ORDER BY %s DESC LIMIT 10) AS GenderRank
+                WHERE AgeRank.GEOID = RaceRank.GEOID 
+                      AND 
+                      GenderRank.GEOID = RaceRank.GEOID
+                """
+            with connection.cursor() as cursor:
+                cursor.execute(query % (age, race, gender))
+                record_list = cursor.fetchall()
+        template = loader.get_template('datamanager/recommandation.html')
+        context = {
+            'record_list' : record_list,
+        }
+        return HttpResponse(template.render(context, request))
+
+
 #   I am using django built-in login-logout interface, which is legit enough so I think currently there is no need to change
 #   this function.
+def logout_request(request):
+    logout(request)
+    return redirect("datamanager:index")
+
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('datamanager/login')
     template_name = 'datamanager/signup.html'
+

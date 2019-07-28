@@ -10,6 +10,7 @@ urlpatterns = [
     path('signup/', views.SignUp.as_view(), name='signup'),
     path('<str:username>/newdata/', views.newdata, name='newdata'),
     path('datalist/', views.datalist, name='datalist'),
+    path('recommandation', views.recommandation, name='recommandation'),
     path('<int:geoid>/', views.detail, name='detail'),
     path('<int:geoid>/deleteComment/<str:context>', views.deleteComment, name='deleteComment'),
 ]
