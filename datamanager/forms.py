@@ -37,9 +37,9 @@ RATE = (
 
 Area = (
     ('', 'Choose...'),
-    ('South', 'South Quad'),
-    ('Main', 'Main Quad'),
-    ('North', 'North Quad'),
+    ('south', 'South Quad'),
+    ('main', 'Main Quad'),
+    ('engin', 'North Quad'),
 )
 
 #   Forms for user to filled out. I use the 'crispy_forms' API to beautify the form.
