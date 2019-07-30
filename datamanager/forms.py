@@ -99,6 +99,7 @@ class CommentForm(forms.Form):
             Submit('submit', 'Submit')
         )
 
+# input_data = [Pop, White, Black, Asian, OtherRace, Male, Female, Young, Middle, Old, Sdist, Ndist, Mdist]
 class recommandationForm(forms.Form):
     young = forms.ChoiceField(choices=Preference)
     old = forms.ChoiceField(choices=Preference)
@@ -108,6 +109,11 @@ class recommandationForm(forms.Form):
     asian = forms.ChoiceField(choices=Preference)
     otherrace = forms.ChoiceField(choices=Preference)
     population = forms.ChoiceField(choices=Preference)
+    male = forms.ChoiceField(choices=Preference)
+    female = forms.ChoiceField(choices=Preference)
+    south = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Acceptable distance away from south quad'}))
+    main = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Acceptable distance away from main quad'}))
+    north = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Acceptable distance away from north quad'}))
 
 
     def __init__(self, *args, **kwargs):
@@ -115,10 +121,28 @@ class recommandationForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column('age', css_class='form-group col-md-3 mb-0'),
-                Column('race', css_class='form-group col-md-3 mb-0'),
-                Column('gender', css_class='form-group col-md-3 mb-0'),
-                Column('area', css_class='form-group col-md-3 mb-0'),
+                Column('young', css_class='form-group col-md-4 mb-0'),
+                Column('middle', css_class='form-group col-md-4 mb-0'),
+                Column('old', css_class='form-group col-md-4 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('black', css_class='form-group col-md-3 mb-0'),
+                Column('white', css_class='form-group col-md-3 mb-0'),
+                Column('asian', css_class='form-group col-md-3 mb-0'),
+                Column('otherrace', css_class='form-group col-md-3 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('population', css_class='form-group col-md-4 mb-0'),
+                Column('male', css_class='form-group col-md-4 mb-0'),
+                Column('female', css_class='form-group col-md-4 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('south', css_class='form-group col-md-4 mb-0'),
+                Column('main', css_class='form-group col-md-4 mb-0'),
+                Column('north', css_class='form-group col-md-4 mb-0'),
                 css_class='form-row'
             ),
             Submit('submit', 'Submit')

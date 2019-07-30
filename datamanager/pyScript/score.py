@@ -76,18 +76,18 @@ def predictor(input_data):
                   "alpha": [0.0001, 0.001, 0.01, 0.1, 1, 10, 100],
                   "l1_ratio": np.arange(0.0, 1.0, 0.1)}
         
-    X = train.drop(['Rate','id'],1)
+    X = train.drop(['Rate','Username'],1)
     Y = train['Rate']
 
     eNet = ElasticNet()
     grid = GridSearchCV(eNet, parametersGrid, scoring='r2', cv=10)
     grid.fit(X, Y)
-    a = grid.predict(input_data.drop(['Rate','id'],1))
+    a = grid.predict(input_data.drop(['Rate','Username'],1))
     return a
 
-def result_prediction(user_id):
+def result_prediction(input_username):
     data = process_for_model('SELECT * FROM rate')
-    data = data[data['id'] == user_id]
+    data = data[data['Username'] == input_username]
     result = np.mean(predictor(data))
     return result
 
@@ -131,9 +131,9 @@ def preference(input_data):
                     how='inner')
     return data
 
-def score_final(input_id, input_data):
+def score_final(input_username, input_data):
     data = preference(input_data)
-    data['score'] = result_prediction(input_id) + data['score']
+    data['score'] = result_prediction(input_username) + data['score']
     data = data.sort_values(by = 'score', ascending=False)
     data['rank'] = range(1, len(data)+1)
     data = data.head(10)

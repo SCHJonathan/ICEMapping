@@ -29,16 +29,24 @@
             <table class="table table-striped table-hover">
                 <tr>
                     <td><strong>GeoID</strong></td>
-                    <td><strong>Distance From You</strong></td>
+                    <td><strong>Score</strong></td>
+                    <td><strong>South</strong></td>
+                    <td><strong>North</strong></td>
+                    <td><strong>Main</strong></td>
                     <td><strong>Longitude</strong></td>
                     <td><strong>Latitude</strong></td>
+                    <td><strong>Rank</strong></td>
                 </tr>
                 {% for record in record_list %}
                     <tr>
-                        <td><a href="{% url 'datamanager:detail' record.0 %}">{{ record.0 }}</a></td>
-                        <td><p>{{ record.1 }}</p></td>
-                        <td><p>{{ record.2 }}</p></td>
-                        <td><p>{{ record.3 }}</p></td>
+                        <td><a href="{% url 'datamanager:detail' record.GEOID %}">{{ record.GEOID }}</a></td>
+                        <td><p>{{ record.score }}</p></td>
+                        <td><p>{{ record.south }}</p></td>
+                        <td><p>{{ record.north }}</p></td>
+                        <td><p>{{ record.main }}</p></td>
+                        <td><p>{{ record.lat }}</p></td>
+                        <td><p>{{ record.lon }}</p></td>
+                        <td><p>{{ record.rank }}</p></td>
                     </tr>
                 {% endfor %}
             </table>
