@@ -57,7 +57,7 @@ def detail(request, geoid):
                 cursor.execute(calRateQuery % (geoid))
                 avg_rate = cursor.fetchone()
                 cursor.execute(userCommentQuery % (geoid, username))
-                all_comment = cursor.fetchall()
+                user_comment = cursor.fetchall()
                 cursor.execute(allCommentQuery % (geoid))
                 all_comment = cursor.fetchall()
 
@@ -94,7 +94,7 @@ def detail(request, geoid):
                        FROM CommentDB
                        WHERE GEOID = %s;
                        """
-                    
+
             userCommentQuery = """\
                        SELECT *
                        FROM CommentDB
