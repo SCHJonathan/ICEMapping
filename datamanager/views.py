@@ -10,7 +10,7 @@ from django.db import connection
 from django.views import generic
 from .models import Tidychampaign, Rate, Socio, CommentDB
 from .forms import UserInfoForm, CommentForm, recommandationForm
-# from .pyScript import distance as distance
+from .pyScript import score
 
 #   Straightforward function.
 def index(request):
@@ -78,7 +78,7 @@ def detail(request, geoid):
         emptyFrom = CommentForm()
         template = loader.get_template('datamanager/detail.html')
         place = get_object_or_404(Tidychampaign, pk=geoid)
-        username = request.user.username
+        Username = request.user.username
         all_comment = []
         user_comment = []
         avg_rate = 0.0
@@ -245,25 +245,6 @@ def recommandation(request):
             race = form['race'].value()
             gender = form['gender'].value()
             area = form['area'].value()
-            # query = """\
-            #     SELECT *
-            #     FROM (SELECT *
-            #           FROM Tidychampaign
-            #           ORDER BY %s DESC LIMIT 10) AS AgeRank,
-            #          (SELECT *
-            #           FROM Tidychampaign
-            #           ORDER BY %s DESC LIMIT 10) AS RaceRank,
-            #          (SELECT *
-            #           FROM Tidychampaign
-            #           ORDER BY %s DESC LIMIT 10) AS GenderRank
-            #     WHERE AgeRank.GEOID = RaceRank.GEOID
-            #           AND
-            #           GenderRank.GEOID = RaceRank.GEOID
-            #     """
-            data = distance.distance(area)
-            # with connection.cursor() as cursor:
-                # cursor.execute(query % (age, race, gender))
-                # record_list = cursor.fetchall()
         template = loader.get_template('datamanager/recommandation.html')
         context = {
             'record_list' : data,

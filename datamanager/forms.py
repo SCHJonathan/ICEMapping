@@ -15,6 +15,7 @@ RACE = (
     ('Black', 'Black'),
     ('White', 'White'),
     ('Asian', 'Asian'),
+    ('Other', 'Other Race'),
     ('NA', 'Prefer not to answer')
 )
 
@@ -92,6 +93,7 @@ class CommentForm(forms.Form):
         )
 
 class recommandationForm(forms.Form):
+    age = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Your age'}))
     race = forms.ChoiceField(choices=RACE)
     gender = forms.ChoiceField(choices=GENDER)
     age = forms.ChoiceField(choices=Age)
