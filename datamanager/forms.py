@@ -50,11 +50,19 @@ Area = (
     ('engin', 'North Quad'),
 )
 
+Preference = (
+    ('', 'Choose...'),
+    ('-1', 'Dislike'),
+    ('-0.5', 'Not good'),
+    ('0', 'No prefer'),
+    ('0.5', 'Good'),
+    ('1', 'Prefer'),
+)
+
 #   Forms for user to filled out. I use the 'crispy_forms' API to beautify the form.
 #   You can google this API to see how it works and use their documentation as reference.
 class UserInfoForm(forms.Form):
     geoid = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'GeoID'}))
-    block = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Block Number'}))
     age = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Your age'}))
     race = forms.ChoiceField(choices=RACE)
     gender = forms.ChoiceField(choices=GENDER)
@@ -65,9 +73,8 @@ class UserInfoForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column('geoid', css_class='form-group col-md-4 mb-0'),
-                Column('block', css_class='form-group col-md-4 mb-0'),
-                Column('age', css_class='form-group col-md-4 mb-0'),
+                Column('geoid', css_class='form-group col-md-6 mb-0'),
+                Column('age', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Row(
@@ -93,11 +100,15 @@ class CommentForm(forms.Form):
         )
 
 class recommandationForm(forms.Form):
-    age = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Your age'}))
-    race = forms.ChoiceField(choices=RACE)
-    gender = forms.ChoiceField(choices=GENDER)
-    age = forms.ChoiceField(choices=Age)
-    area = forms.ChoiceField(choices=Area)
+    young = forms.ChoiceField(choices=Preference)
+    old = forms.ChoiceField(choices=Preference)
+    middle = forms.ChoiceField(choices=Preference)
+    white = forms.ChoiceField(choices=Preference)
+    black = forms.ChoiceField(choices=Preference)
+    asian = forms.ChoiceField(choices=Preference)
+    otherrace = forms.ChoiceField(choices=Preference)
+    population = forms.ChoiceField(choices=Preference)
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
