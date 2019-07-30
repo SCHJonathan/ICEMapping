@@ -38,17 +38,36 @@ def detail(request, geoid):
         commentQuery = """\
                    SELECT *
                    FROM CommentDB
+                   WHERE GEOID = %s;
+                   """
+        with connection.cursor() as cursor:
+                cursor.execute(commentQuery % (geoid))
+                list_comment = cursor.fetchall()
+
+        commentQuery0 = """\
+                   SELECT *
+                   FROM CommentDB
                    WHERE GEOID = %s AND Username = '%s';
                    """
         with connection.cursor() as cursor:
-                cursor.execute(commentQuery % (geoid, username))
-                list_comment = cursor.fetchall()
+                cursor.execute(commentQuery0 % (geoid, username))
+                list_comment0 = cursor.fetchall()
 
+        CalRateQuery = """\
+                   SELECT ROUND(AVG(Rate), 2)
+                   FROM CommentDB
+                   WHERE GEOID = %s;
+                   """
+        with connection.cursor() as cursor:
+                cursor.execute(CalRateQuery % (geoid))
+                avg_rate = cursor.fetchall()
         form = CommentForm()
         context = {
             'record' : place,
             'form' : form,
             'comments' : list_comment,
+            'comments0' : list_comment0,
+            'avg_rate': avg_rate,
         }
         return HttpResponse(template.render(context, request))
 
@@ -68,7 +87,7 @@ def detail(request, geoid):
             commentQuery = """\
                        SELECT *
                        FROM CommentDB
-                       WHERE GEOID = %s AND Username = '%s';
+                       WHERE GEOID = %s;
                        """
 
             insertQuery = """\
@@ -77,7 +96,7 @@ def detail(request, geoid):
                         """
             with connection.cursor() as cursor:
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
-                cursor.execute(commentQuery % (geoid, username))
+                cursor.execute(commentQuery % (geoid))
                 list_comment = cursor.fetchall()
 
 
@@ -134,15 +153,24 @@ def newdata(request, username):
             geoid = form['geoid'].value()
 
             place = get_object_or_404(Tidychampaign, pk=geoid)
+            list = [age,race,gender];
+            for item in list:
+                if item != 'NA':
 
+                    query = """\
+                        UPDATE Tidychampaign
+                        SET %s = %s + 1
+                        WHERE GEOID = %s;
+                        """
+                    with connection.cursor() as cursor:
+                         cursor.execute(query %(item, item, geoid))
             query = """\
                 UPDATE Tidychampaign
-                SET %s = %s + 1, %s = %s + 1, %s = %s + 1, %s = %s + 1
+                SET Population = Population + 1
                 WHERE GEOID = %s;
                 """
             with connection.cursor() as cursor:
-                 cursor.execute(query % (age, age, race, race, gender, gender, "Population", "Population", geoid))
-
+                 cursor.execute(query %geoid)
         template = loader.get_template('datamanager/thanks.html')
         context = {
             'username' : username,
@@ -175,9 +203,9 @@ def datalist(request):
 #
 #   This function is also incomplete.
 #   1. I also don't handle the 'Prefer not to answer' edge cases.
-#   2. As you can see from the query, it just sorts the table based on age, 
-#      race, gender and then join three table. Han Bro will use some 
-#      machine learning models to implement a better way to give user 
+#   2. As you can see from the query, it just sorts the table based on age,
+#      race, gender and then join three table. Han Bro will use some
+#      machine learning models to implement a better way to give user
 #      recommandation. We need to integrate that.
 def recommandation(request):
     if request.method == "GET":
@@ -221,7 +249,7 @@ def recommandation(request):
         return HttpResponse(template.render(context, request))
 
 
-#   I am using django built-in login-logout interface, which is legit enough so I think 
+#   I am using django built-in login-logout interface, which is legit enough so I think
 #   currently there is no need to change this function.
 def logout_request(request):
     logout(request)
@@ -231,4 +259,3 @@ class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('datamanager:login')
     template_name = 'datamanager/signup.html'
-
