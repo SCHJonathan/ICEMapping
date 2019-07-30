@@ -8,7 +8,7 @@ from django.http import Http404
 from django.urls import reverse, reverse_lazy
 from django.db import connection
 from django.views import generic
-from .models import Tidychampaign, CommentDB
+from .models import Tidychampaign, Rate, Socio, CommentDB
 from .forms import UserInfoForm, CommentForm, recommandationForm
 # from .pyScript import distance as distance
 
@@ -110,6 +110,7 @@ def detail(request, geoid):
                        FROM CommentDB
                        WHERE GEOID = %s;
                        """
+
             with connection.cursor() as cursor:
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
                 cursor.execute(userCommentQuery % (geoid, username))

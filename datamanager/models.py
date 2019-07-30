@@ -156,3 +156,51 @@ class CommentDB(models.Model):
     class Meta:
         managed = False
         db_table = 'commentdb'
+
+class Socio(models.Model):
+    geography = models.TextField(db_column='Geography', blank=True, null=True)  # Field name made lowercase.
+    year_built = models.IntegerField(blank=True, null=True)
+    median_income = models.IntegerField(db_column='Median_Income', blank=True, null=True)  # Field name made lowercase.
+    median_rent = models.IntegerField(db_column='Median_rent', blank=True, null=True)  # Field name made lowercase.
+    estimate_total_field = models.IntegerField(db_column='Estimate..Total.', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
+    no_schooling = models.IntegerField(db_column='No_schooling', blank=True, null=True)  # Field name made lowercase.
+    nursery_school = models.IntegerField(db_column='Nursery_school', blank=True, null=True)  # Field name made lowercase.
+    kindergarten = models.IntegerField(db_column='Kindergarten', blank=True, null=True)  # Field name made lowercase.
+    x1st_grade = models.IntegerField(db_column='X1st_grade', blank=True, null=True)  # Field name made lowercase.
+    x2nd_grade = models.IntegerField(db_column='X2nd.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x3rd_grade = models.IntegerField(db_column='X3rd.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x4th_grade = models.IntegerField(db_column='X4th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x5th_grade = models.IntegerField(db_column='X5th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x6th_grade = models.IntegerField(db_column='X6th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x7th_grade = models.IntegerField(db_column='X7th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x8th_grade = models.IntegerField(db_column='X8th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x9th_grade = models.IntegerField(db_column='X9th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x10th_grade = models.IntegerField(db_column='X10th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x11th_grade = models.IntegerField(db_column='X11th.grade', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    x12th_grade_no_diploma = models.IntegerField(db_column='X12th.grade..no.diploma', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    regular_high_school_diploma = models.IntegerField(db_column='Regular.high.school.diploma', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    ged_or_alternative_credential = models.IntegerField(db_column='GED.or.alternative.credential', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    some_college_less_than_1_year = models.IntegerField(db_column='Some.college..less.than.1.year', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    some_college_1_or_more_years_no_degree = models.IntegerField(db_column='Some.college..1.or.more.years..no.degree', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    associate_s_degree = models.IntegerField(db_column='Associate.s.degree', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    bachelor_s_degree = models.IntegerField(db_column='Bachelor.s.degree', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    master_s_degree = models.IntegerField(db_column='Master.s.degree', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    professional_school_degree = models.IntegerField(db_column='Professional.school.degree', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    doctorate_degree = models.IntegerField(db_column='Doctorate.degree', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+
+    class Meta:
+        managed = False
+        db_table = 'socio'
+
+class Rate(models.Model):
+    username = models.TextField(db_column='Username', null=False, primary_key=True)
+    race = models.TextField(db_column='Race', blank=True, null=True)  # Field name made lowercase.
+    gender = models.TextField(db_column='Gender', blank=True, null=True)  # Field name made lowercase.
+    age = models.IntegerField(db_column='Age', blank=True, null=True)  # Field name made lowercase.
+    dept = models.TextField(db_column='Dept', blank=True, null=True)  # Field name made lowercase.
+    block = models.TextField(db_column='Block', blank=True, null=True)  # Field name made lowercase.
+    rate = models.IntegerField(db_column='Rate', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'rate'

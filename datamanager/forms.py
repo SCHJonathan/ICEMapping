@@ -26,6 +26,13 @@ Age = (
     ('NA', 'Prefer not to answer')
 )
 
+Dept = (
+    ('', 'Choose...'),
+    ('North','North'),
+    ('South','South'),
+    ('Main','Main' )
+)
+
 RATE = (
     ('', 'Choose...'),
     ('1', '1'),
@@ -46,24 +53,26 @@ Area = (
 #   You can google this API to see how it works and use their documentation as reference.
 class UserInfoForm(forms.Form):
     geoid = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'GeoID'}))
-    age = forms.ChoiceField(choices=Age)
+    block = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Block Number'}))
+    age = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Your age'}))
     race = forms.ChoiceField(choices=RACE)
     gender = forms.ChoiceField(choices=GENDER)
+    dept = forms.ChoiceField(choices=Dept)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column('username', css_class='form-group col-md-6 mb-0'),
-                Column('email', css_class='form-group col-md-6 mb-0'),
+                Column('geoid', css_class='form-group col-md-4 mb-0'),
+                Column('block', css_class='form-group col-md-4 mb-0'),
+                Column('age', css_class='form-group col-md-4 mb-0'),
                 css_class='form-row'
             ),
-            'geoid',
             Row(
-                Column('age', css_class='form-group col-md-6 mb-0'),
+                Column('dept', css_class='form-group col-md-4 mb-0'),
                 Column('race', css_class='form-group col-md-4 mb-0'),
-                Column('gender', css_class='form-group col-md-2 mb-0'),
+                Column('gender', css_class='form-group col-md-4 mb-0'),
                 css_class='form-row'
             ),
             Submit('submit', 'Submit')
