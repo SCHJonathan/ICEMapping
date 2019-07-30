@@ -157,6 +157,7 @@ class CommentDB(models.Model):
         managed = False
         db_table = 'commentdb'
 
+
 class Socio(models.Model):
     geography = models.TextField(db_column='Geography', blank=True, null=True)  # Field name made lowercase.
     year_built = models.IntegerField(blank=True, null=True)

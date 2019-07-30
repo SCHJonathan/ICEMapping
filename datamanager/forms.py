@@ -9,7 +9,7 @@ GENDER = (
     ('NA', 'Prefer not to answer')
 )
 
-    
+
 RACE = (
     ('', 'Choose...'),
     ('Black', 'Black'),

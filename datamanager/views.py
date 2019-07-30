@@ -168,11 +168,12 @@ def newdata(request, username):
     else:
         form = UserInfoForm(request.POST)
         if form.is_valid():
-
+            username = request.user.username;
+            geoid = form['geoid'].value()
             age = form['age'].value()
             race = form['race'].value()
             gender = form['gender'].value()
-            geoid = form['geoid'].value()
+            dept = form['dept'].value()
 
             place = get_object_or_404(Tidychampaign, pk=geoid)
             list = [age,race,gender];
@@ -193,6 +194,19 @@ def newdata(request, username):
                 """
             with connection.cursor() as cursor:
                  cursor.execute(query %geoid)
+#insert into user info
+            connection.cursor.execute("SELECT Block FROM Tidychampaign WHERE GEOID = %s" %geoid)
+            block = connection.cursor.fetchone()
+            while block is not None:
+                  block = connection.cursor.fetchone()
+
+            insertInfoQuery = """\
+                INSERT INTO UserInfo(Username, Race, Gender, Age, Dept, Block)
+                VALUES ('%s', '%s', '%s', %s,'%s','%s');
+                """
+            with connection.cursor() as cursor:
+                 cursor.execute(insertInfoQuery %(username,race,gender,age,dept,block))
+
         template = loader.get_template('datamanager/thanks.html')
         context = {
             'username' : username,
