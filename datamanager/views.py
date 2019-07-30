@@ -111,6 +111,17 @@ def detail(request, geoid):
                        WHERE GEOID = %s;
                        """
 
+            insertRateQuery = """\
+                       INSERT INTO rate(Username, Race, Gender, Age, Dept, Block, Rate)
+                        VALUES ('%s', '%s', '%s', %s, '%s', '%s', %s);
+                       """
+
+            nrace = None
+            ngender = None
+            nage = None
+            ndept = None
+            nblock = None
+
             with connection.cursor() as cursor:
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
                 cursor.execute(userCommentQuery % (geoid, username))
@@ -119,6 +130,7 @@ def detail(request, geoid):
                 all_comment = cursor.fetchall()
                 cursor.execute(calRateQuery % (geoid))
                 avg_rate = cursor.fetchone()
+                cursor.execute(insertRateQuery % (username, nrace, ngender, nage, ndept, nblock, rate))
 
         context = {
             'record' : place,
@@ -273,10 +285,14 @@ def recommandation(request):
             input_data[10] = form['main'].value()
             input_data[11] = form['north'].value()
 
-            # updateQuery = """\
-            #               """
-            # with connection.cursor() as cursor:
-            #         cursor.execute(updateQuery % ())
+            updateQuery = """\
+            UPDATE rate, UserInfo
+            SET rate.Race = UserInfo.Race, rate.Gender = UserInfo.Gender, rate.Age = UserInfo.Age, 
+            rate.Dept = UserInfo.Dept, rate.Block = UserInfo.Block
+            WHERE rate.Username = UserInfo.Username
+            """
+            with connection.cursor() as cursor:
+                cursor.execute(updateQuery)
             data = score.score_final(username, input_data)
 
         template = loader.get_template('datamanager/recommandation.html')
