@@ -176,7 +176,7 @@ def newdata(request, username):
             dept = form['dept'].value()
 
             place = get_object_or_404(Tidychampaign, pk=geoid)
-            list = [age,race,gender];
+            list = [race,gender];
             for item in list:
                 if item != 'NA':
 
@@ -195,10 +195,18 @@ def newdata(request, username):
             with connection.cursor() as cursor:
                  cursor.execute(query %geoid)
 #insert into user info
-            connection.cursor.execute("SELECT Block FROM Tidychampaign WHERE GEOID = %s" %geoid)
-            block = connection.cursor.fetchone()
-            while block is not None:
-                  block = connection.cursor.fetchone()
+            query = """\
+                SELECT Block FROM Tidychampaign WHERE GEOID = %s
+                """
+
+            with connection.cursor() as cursor:
+                 cursor.execute(query %geoid)
+                 block = cursor.fetchone()[0]
+            #connection.cursor.execute("SELECT Block FROM Tidychampaign WHERE GEOID = %s" %geoid)
+            #block = connection.cursor.fetchone()
+
+            #while block is not None:
+            #      block = connection.cursor.fetchone()
 
             insertInfoQuery = """\
                 INSERT INTO UserInfo(Username, Race, Gender, Age, Dept, Block)
