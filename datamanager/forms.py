@@ -9,13 +9,13 @@ GENDER = (
     ('NA', 'Prefer not to answer')
 )
 
-
+    
 RACE = (
     ('', 'Choose...'),
     ('Black', 'Black'),
     ('White', 'White'),
     ('Asian', 'Asian'),
-    ('Other', 'Other Race'),
+    ('OtherRace', 'Other Race'),
     ('NA', 'Prefer not to answer')
 )
 
