@@ -204,7 +204,7 @@ def newdata(request, username):
 
             insertInfoQuery = """\
                 INSERT INTO UserInfo(Username, Race, Gender, Age, Dept, Block)
-                VALUES ('%s', '%s', '%s', %s,'%s','%s');
+                VALUES ('%s', '%s', '%s', %s, '%s','%s');
                 """
             with connection.cursor() as cursor:
                  cursor.execute(insertInfoQuery %(username,race,gender,age,dept,block))
@@ -273,10 +273,9 @@ def recommandation(request):
             input_data[10] = form['main'].value()
             input_data[11] = form['north'].value()
 
-            # updateQuery = """\
-            #               """
-            # with connection.cursor() as cursor:
-            #         cursor.execute(updateQuery % ())
+            
+            with connection.cursor() as cursor:
+                    cursor.execute(updateQuery % ())
             data = score.score_final(username, input_data)
 
         template = loader.get_template('datamanager/recommandation.html')

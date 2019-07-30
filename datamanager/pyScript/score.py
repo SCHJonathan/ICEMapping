@@ -31,7 +31,7 @@ def distance(part):
         c = 2 * asin(sqrt(a))
         r = 6371
         dis[i] = c * r
-    data['distance1'] = dis
+    data['distance1'] = dis / 1.60934
     data = data.drop(['lon', 'lat', 'Block'], 1)
     return [dis,data]
 
@@ -136,5 +136,4 @@ def score_final(input_username, input_data):
     data['score'] = result_prediction(input_username) + data['score']
     data = data.sort_values(by = 'score', ascending=False)
     data['rank'] = range(1, len(data)+1)
-    data = data.head(10)
     return data  
