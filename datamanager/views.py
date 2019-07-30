@@ -243,6 +243,8 @@ def datalist(request):
 #      race, gender and then join three table. Han Bro will use some
 #      machine learning models to implement a better way to give user
 #      recommandation. We need to integrate that.
+# input_data = [Pop, White, Black, Asian, OtherRace, Male, Female, Young, Middle, Old, Sdist, Ndist, Mdist]
+
 def recommandation(request):
     if request.method == "GET":
         template = loader.get_template('datamanager/recommandation.html')
@@ -253,12 +255,28 @@ def recommandation(request):
         return HttpResponse(template.render(context, request))
     else:
         form = recommandationForm(request.POST)
-        record_list = []
+        username = request.user.username
+        input_data = list(range(12))
         if form.is_valid():
-            age = form['age'].value()
-            race = form['race'].value()
-            gender = form['gender'].value()
-            area = form['area'].value()
+            input_data[0] = form['population'].value()
+            input_data[1] = form['black'].value()
+            input_data[2] = form['asian'].value()
+            input_data[3] = form['otherrace'].value()
+            input_data[4] = form['male'].value()
+            input_data[5] = form['female'].value()
+            input_data[6] = form['young'].value()
+            input_data[7] = form['middle'].value()
+            input_data[8] = form['old'].value()
+            input_data[9] = form['south'].value()
+            input_data[10] = form['main'].value()
+            input_data[11] = form['north'].value()
+
+            # updateQuery = """\
+            #               """
+            # with connection.cursor() as cursor:
+            #         cursor.execute(updateQuery % ())
+            data = score.score_final(username, input_data)
+
         template = loader.get_template('datamanager/recommandation.html')
         context = {
             'record_list' : data,
