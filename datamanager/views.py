@@ -54,7 +54,7 @@ def detail(request, geoid):
                 list_comment0 = cursor.fetchall()
 
         CalRateQuery = """\
-                   SELECT AVG(Rate)
+                   SELECT ROUND(AVG(Rate), 2)
                    FROM CommentDB
                    WHERE GEOID = %s;
                    """
