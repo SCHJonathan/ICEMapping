@@ -38,17 +38,36 @@ def detail(request, geoid):
         commentQuery = """\
                    SELECT *
                    FROM CommentDB
+                   WHERE GEOID = %s;
+                   """
+        with connection.cursor() as cursor:
+                cursor.execute(commentQuery % (geoid))
+                list_comment = cursor.fetchall()
+
+        commentQuery0 = """\
+                   SELECT *
+                   FROM CommentDB
                    WHERE GEOID = %s AND Username = '%s';
                    """
         with connection.cursor() as cursor:
-                cursor.execute(commentQuery % (geoid, username))
-                list_comment = cursor.fetchall()
+                cursor.execute(commentQuery0 % (geoid, username))
+                list_comment0 = cursor.fetchall()
 
+        CalRateQuery = """\
+                   SELECT AVG(Rate)
+                   FROM CommentDB
+                   WHERE GEOID = %s;
+                   """
+        with connection.cursor() as cursor:
+                cursor.execute(CalRateQuery % (geoid))
+                avg_rate = cursor.fetchall()
         form = CommentForm()
         context = {
             'record' : place,
             'form' : form,
             'comments' : list_comment,
+            'comments0' : list_comment0,
+            'avg_rate': avg_rate,
         }
         return HttpResponse(template.render(context, request))
 
@@ -68,7 +87,7 @@ def detail(request, geoid):
             commentQuery = """\
                        SELECT *
                        FROM CommentDB
-                       WHERE GEOID = %s AND Username = '%s';
+                       WHERE GEOID = %s;
                        """
 
             insertQuery = """\
@@ -77,7 +96,7 @@ def detail(request, geoid):
                         """
             with connection.cursor() as cursor:
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
-                cursor.execute(commentQuery % (geoid, username))
+                cursor.execute(commentQuery % (geoid))
                 list_comment = cursor.fetchall()
 
 

@@ -9,13 +9,13 @@
 {% block link %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-{% endblock link %} 
+{% endblock link %}
 
 {% block login %}
     <form action="{% url 'datamanager:datalist' %}" method="GET">
         {% csrf_token %}
         <button type="submit">Back to data list</button>
-    </form>    
+    </form>
 {% endblock %}
 
 {% block content %}
@@ -52,18 +52,52 @@
             <td><p>{{ record.old }}</p></td>
         </tr>
     </table>
- 
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <td><strong>Users' Rate</strong></td>
+
+        </tr>
+        <tr>
+            <td><p>{{ avg_rate.0.0 }}</p></td>
+
+        </tr>
+    </table>
+
+    <div style="background-color:lightpink">
+      <h3>Comments</h3>
+    </div>
+
     <br>
 
     {% if comments %}
         <table class="table table-striped table-hover">
             <tr>
-                <td><strong>Your Rate</strong></td>
-                <td><strong>Your Comment</strong></td>
-                <td><strong>^_^</strong></td>
+                <td><strong>Username</strong></td>
+                <td><strong>Rate</strong></td>
+                <td><strong>Comment</strong></td>
+
             </tr>
             {% for comment_entry in comments %}
             <tr>
+                <td><p>{{ comment_entry.0 }}</p></td>
+                <td><p>{{ comment_entry.2 }}</p></td>
+                <td><p>{{ comment_entry.3 }}</p></td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% if comments0 %}
+        <table class="table table-striped table-hover">
+            <tr>
+                <td><strong>Username</strong></td>
+                <td><strong>Your Rate</strong></td>
+                <td><strong>Your Comment</strong></td>
+                <td><strong>Action</strong></td>
+            </tr>
+            {% for comment_entry in comments0 %}
+            <tr>
+                <td><p>{{ comment_entry.0 }}</p></td>
                 <td><p>{{ comment_entry.2 }}</p></td>
                 <td><p>{{ comment_entry.3 }}</p></td>
                 <td>
@@ -72,13 +106,12 @@
                         <div class="buttonWrapper">
                             <button type="submit">Delete</button>
                         </div>
-                    </form> 
+                    </form>
                 </td>
             </tr>
             {% endfor %}
         </table>
     {% endif %}
-
     <br>
 
     <form method="POST">
