@@ -56,29 +56,23 @@
     <table class="table table-striped table-hover">
         <tr>
             <td><strong>Users' Rate</strong></td>
-
         </tr>
         <tr>
-            <td><p>{{ avg_rate.0.0 }}</p></td>
-
+            <td><p>{{ avg_rate.0 }}</p></td>
         </tr>
     </table>
 
-    <div style="background-color:lightpink">
-      <h3>Comments</h3>
-    </div>
-
     <br>
 
-    {% if comments %}
+    {% if user_comment %}
         <table class="table table-striped table-hover">
+            <caption>All comments</caption>
             <tr>
                 <td><strong>Username</strong></td>
                 <td><strong>Rate</strong></td>
                 <td><strong>Comment</strong></td>
-
             </tr>
-            {% for comment_entry in comments %}
+            {% for comment_entry in user_comment %}
             <tr>
                 <td><p>{{ comment_entry.0 }}</p></td>
                 <td><p>{{ comment_entry.2 }}</p></td>
@@ -87,15 +81,17 @@
             {% endfor %}
         </table>
     {% endif %}
-    {% if comments0 %}
+
+    {% if all_comment %}
         <table class="table table-striped table-hover">
+            <caption>Your comments</caption>
             <tr>
                 <td><strong>Username</strong></td>
                 <td><strong>Your Rate</strong></td>
                 <td><strong>Your Comment</strong></td>
                 <td><strong>Action</strong></td>
             </tr>
-            {% for comment_entry in comments0 %}
+            {% for comment_entry in all_comment %}
             <tr>
                 <td><p>{{ comment_entry.0 }}</p></td>
                 <td><p>{{ comment_entry.2 }}</p></td>

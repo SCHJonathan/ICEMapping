@@ -10,7 +10,7 @@ from django.db import connection
 from django.views import generic
 from .models import Tidychampaign, CommentDB
 from .forms import UserInfoForm, CommentForm, recommandationForm
-from .pyScript import distance as distance
+# from .pyScript import distance as distance
 
 #   Straightforward function.
 def index(request):
@@ -30,43 +30,45 @@ def index(request):
 #   Feel free to add additional features if you want.
 def detail(request, geoid):
     if request.method == "GET":
-        list_comment = []
+        all_comment = []
+        user_comment = []
+        avg_rate = 0
         username = request.user.username
         template = loader.get_template('datamanager/detail.html')
         place = get_object_or_404(Tidychampaign, pk=geoid)
 
-        commentQuery = """\
+        allCommentQuery = """\
                    SELECT *
                    FROM CommentDB
                    WHERE GEOID = %s;
                    """
-        with connection.cursor() as cursor:
-                cursor.execute(commentQuery % (geoid))
-                list_comment = cursor.fetchall()
 
-        commentQuery0 = """\
+        userCommentQuery = """\
                    SELECT *
                    FROM CommentDB
                    WHERE GEOID = %s AND Username = '%s';
                    """
-        with connection.cursor() as cursor:
-                cursor.execute(commentQuery0 % (geoid, username))
-                list_comment0 = cursor.fetchall()
-
-        CalRateQuery = """\
+        calRateQuery = """\
                    SELECT ROUND(AVG(Rate), 2)
                    FROM CommentDB
                    WHERE GEOID = %s;
                    """
         with connection.cursor() as cursor:
-                cursor.execute(CalRateQuery % (geoid))
-                avg_rate = cursor.fetchall()
+                cursor.execute(calRateQuery % (geoid))
+                avg_rate = cursor.fetchone()
+                cursor.execute(userCommentQuery % (geoid, username))
+                all_comment = cursor.fetchall()
+                cursor.execute(allCommentQuery % (geoid))
+                all_comment = cursor.fetchall()
+
         form = CommentForm()
+
+
         context = {
             'record' : place,
             'form' : form,
-            'comments' : list_comment,
-            'comments0' : list_comment0,
+            'all_comment' : all_comment,
+            'user_comment' : user_comment,
             'avg_rate': avg_rate,
         }
         return HttpResponse(template.render(context, request))
@@ -76,34 +78,53 @@ def detail(request, geoid):
         emptyFrom = CommentForm()
         template = loader.get_template('datamanager/detail.html')
         place = get_object_or_404(Tidychampaign, pk=geoid)
+        username = request.user.username
+        all_comment = []
+        user_comment = []
+        avg_rate = 0.0
         rate = 0
-        list_comment = []
 
         if form.is_valid():
             username = request.user.username
             rate = form['rate'].value()
             comment = form['comment'].value()
 
-            commentQuery = """\
+            allCommentQuery = """\
                        SELECT *
                        FROM CommentDB
                        WHERE GEOID = %s;
+                       """
+                    
+            userCommentQuery = """\
+                       SELECT *
+                       FROM CommentDB
+                       WHERE GEOID = %s AND Username = '%s';
                        """
 
             insertQuery = """\
                         INSERT INTO CommentDB(GEOID, Username, Rate, Comment)
                         VALUES (%s, '%s', %s, '%s');
                         """
+            calRateQuery = """\
+                       SELECT ROUND(AVG(Rate), 2)
+                       FROM CommentDB
+                       WHERE GEOID = %s;
+                       """
             with connection.cursor() as cursor:
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
-                cursor.execute(commentQuery % (geoid))
-                list_comment = cursor.fetchall()
-
+                cursor.execute(userCommentQuery % (geoid, username))
+                user_comment = cursor.fetchall()
+                cursor.execute(allCommentQuery % (geoid))
+                all_comment = cursor.fetchall()
+                cursor.execute(calRateQuery % (geoid))
+                avg_rate = cursor.fetchone()
 
         context = {
             'record' : place,
-            'form' : emptyFrom,
-            'comments' : list_comment,
+            'form' : form,
+            'all_comment' : all_comment,
+            'user_comment' : user_comment,
+            'avg_rate': avg_rate,
         }
         return HttpResponse(template.render(context, request))
 
