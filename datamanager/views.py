@@ -194,7 +194,6 @@ def newdata(request, username):
                 """
             with connection.cursor() as cursor:
                  cursor.execute(query %geoid)
-#insert into user info
             query = """\
                 SELECT Block FROM Tidychampaign WHERE GEOID = %s
                 """
@@ -202,11 +201,6 @@ def newdata(request, username):
             with connection.cursor() as cursor:
                  cursor.execute(query %geoid)
                  block = cursor.fetchone()[0]
-            #connection.cursor.execute("SELECT Block FROM Tidychampaign WHERE GEOID = %s" %geoid)
-            #block = connection.cursor.fetchone()
-
-            #while block is not None:
-            #      block = connection.cursor.fetchone()
 
             insertInfoQuery = """\
                 INSERT INTO UserInfo(Username, Race, Gender, Age, Dept, Block)

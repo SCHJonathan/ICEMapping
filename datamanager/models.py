@@ -205,3 +205,15 @@ class Rate(models.Model):
     class Meta:
         managed = False
         db_table = 'rate'
+
+class Userinfo(models.Model):
+    username = models.CharField(db_column='Username', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    race = models.TextField(db_column='Race', blank=True, null=True)  # Field name made lowercase.
+    gender = models.TextField(db_column='Gender', blank=True, null=True)  # Field name made lowercase.
+    age = models.IntegerField(db_column='Age', blank=True, null=True)  # Field name made lowercase.
+    dept = models.TextField(db_column='Dept', blank=True, null=True)  # Field name made lowercase.
+    block = models.TextField(db_column='Block', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'userinfo'
