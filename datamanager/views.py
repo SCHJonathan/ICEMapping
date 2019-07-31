@@ -191,19 +191,24 @@ def newdata(request, username):
             race = form['race'].value()
             gender = form['gender'].value()
             dept = form['dept'].value()
+            dictRaceGender = {
+                "B" : "Black",
+                "W" : "White",
+                "A" : "Asian",
+                "F" : "Female",
+                "M" : "Male"
+            }
+            list = [race,gender];
+            for item in list:
+                if item != 'NA':
 
-            # place = get_object_or_404(Tidychampaign, pk=geoid)
-            # list = [race,gender];
-            # for item in list:
-            #     if item != 'NA':
-
-            #         query = """\
-            #             UPDATE Tidychampaign
-            #             SET %s = %s + 1
-            #             WHERE GEOID = %s;
-            #             """
-            #         with connection.cursor() as cursor:
-            #              cursor.execute(query %(item, item, geoid))
+                    query = """\
+                        UPDATE Tidychampaign
+                        SET %s = %s + 1
+                        WHERE GEOID = %s;
+                        """
+                    with connection.cursor() as cursor:
+                         cursor.execute(query % (dictRaceGender[item], dictRaceGender[item], geoid))
             query = """\
                 UPDATE Tidychampaign
                 SET Population = Population + 1
