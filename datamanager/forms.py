@@ -4,18 +4,18 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 GENDER = (
     ('', 'Choose...'),
-    ('Female', 'Female'),
-    ('Male', 'Male'),
+    ('F', 'Female'),
+    ('M', 'Male'),
     ('NA', 'Prefer not to answer')
 )
 
 
 RACE = (
     ('', 'Choose...'),
-    ('Black', 'Black'),
-    ('White', 'White'),
-    ('Asian', 'Asian'),
-    ('OtherRace', 'Other Race'),
+    ('B', 'Black'),
+    ('W', 'White'),
+    ('A', 'Asian'),
+    ('O', 'Other Race'),
     ('NA', 'Prefer not to answer')
 )
 

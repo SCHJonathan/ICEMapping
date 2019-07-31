@@ -30,8 +30,8 @@ def distance(part):
         a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
         c = 2 * asin(sqrt(a))
         r = 6371
-        dis[i] = c * r
-    data['distance1'] = dis / 1.60934
+        dis[i] = c * r / 1.60934
+    data['distance1'] = dis
     data = data.drop(['lon', 'lat', 'Block'], 1)
     return [dis,data]
 
@@ -62,7 +62,7 @@ def process_for_model(statement):
     data = data.drop(['GEOID', 'lat', 'lon', 'Block', 'Geography'],1)
     
     for feature in data.columns:
-        if data[feature].dtype == 'object':
+        if data[feature].dtype == 'object' and feature != 'Username':
             X_ = pd.get_dummies(data[feature])
             data = pd.concat([data, X_], axis = 1).drop([feature], axis = 1)
 
@@ -75,7 +75,7 @@ def predictor(input_data):
     parametersGrid = {"max_iter": [1, 5, 10],
                   "alpha": [0.0001, 0.001, 0.01, 0.1, 1, 10, 100],
                   "l1_ratio": np.arange(0.0, 1.0, 0.1)}
-        
+  
     X = train.drop(['Rate','Username'],1)
     Y = train['Rate']
 

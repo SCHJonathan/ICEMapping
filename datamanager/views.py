@@ -11,6 +11,7 @@ from django.views import generic
 from .models import Tidychampaign, Rate, Socio, CommentDB
 from .forms import UserInfoForm, CommentForm, recommandationForm
 from .pyScript import score
+import pandas as pd
 
 #   Straightforward function.
 def index(request):
@@ -111,16 +112,19 @@ def detail(request, geoid):
                        WHERE GEOID = %s;
                        """
 
+            # insertRateQuery = """\
+            #            INSERT INTO rate(Username, Race, Gender, Age, Dept, Block, Rate)
+            #             VALUES ('%s', '%s', '%s', %s, '%s', '%s', %s);
+            #            """
             insertRateQuery = """\
-                       INSERT INTO rate(Username, Race, Gender, Age, Dept, Block, Rate)
-                        VALUES ('%s', '%s', '%s', %s, '%s', '%s', %s);
+                       INSERT INTO rate(Username, Rate)
+                        VALUES ('%s', %s);
                        """
-
-            nrace = None
-            ngender = None
-            nage = None
-            ndept = None
-            nblock = None
+            # nrace = None
+            # ngender = None
+            # nage = None
+            # ndept = None
+            # nblock = None
 
             with connection.cursor() as cursor:
                 cursor.execute(insertQuery % (geoid, username, rate, comment))
@@ -130,7 +134,8 @@ def detail(request, geoid):
                 all_comment = cursor.fetchall()
                 cursor.execute(calRateQuery % (geoid))
                 avg_rate = cursor.fetchone()
-                cursor.execute(insertRateQuery % (username, nrace, ngender, nage, ndept, nblock, rate))
+                # cursor.execute(insertRateQuery % (username, nrace, ngender, nage, ndept, nblock, rate))
+                cursor.execute(insertRateQuery % (username, rate))
 
         context = {
             'record' : place,
@@ -187,18 +192,18 @@ def newdata(request, username):
             gender = form['gender'].value()
             dept = form['dept'].value()
 
-            place = get_object_or_404(Tidychampaign, pk=geoid)
-            list = [race,gender];
-            for item in list:
-                if item != 'NA':
+            # place = get_object_or_404(Tidychampaign, pk=geoid)
+            # list = [race,gender];
+            # for item in list:
+            #     if item != 'NA':
 
-                    query = """\
-                        UPDATE Tidychampaign
-                        SET %s = %s + 1
-                        WHERE GEOID = %s;
-                        """
-                    with connection.cursor() as cursor:
-                         cursor.execute(query %(item, item, geoid))
+            #         query = """\
+            #             UPDATE Tidychampaign
+            #             SET %s = %s + 1
+            #             WHERE GEOID = %s;
+            #             """
+            #         with connection.cursor() as cursor:
+            #              cursor.execute(query %(item, item, geoid))
             query = """\
                 UPDATE Tidychampaign
                 SET Population = Population + 1
@@ -270,20 +275,21 @@ def recommandation(request):
     else:
         form = recommandationForm(request.POST)
         username = request.user.username
-        input_data = list(range(12))
+        input_data = list(range(13))
         if form.is_valid():
-            input_data[0] = form['population'].value()
-            input_data[1] = form['black'].value()
-            input_data[2] = form['asian'].value()
-            input_data[3] = form['otherrace'].value()
-            input_data[4] = form['male'].value()
-            input_data[5] = form['female'].value()
-            input_data[6] = form['young'].value()
-            input_data[7] = form['middle'].value()
-            input_data[8] = form['old'].value()
-            input_data[9] = form['south'].value()
-            input_data[10] = form['main'].value()
-            input_data[11] = form['north'].value()
+            input_data[0] = float(form['population'].value())
+            input_data[1] = float(form['white'].value())
+            input_data[2] = float(form['black'].value())
+            input_data[3] = float(form['asian'].value())
+            input_data[4] = float(form['otherrace'].value())
+            input_data[5] = float(form['male'].value())
+            input_data[6] = float(form['female'].value())
+            input_data[7] = float(form['young'].value())
+            input_data[8] = float(form['middle'].value())
+            input_data[9] = float(form['old'].value())
+            input_data[10] = float(form['south'].value())
+            input_data[11] = float(form['main'].value())
+            input_data[12] = float(form['north'].value())
 
             updateQuery = """\
             UPDATE rate, UserInfo
@@ -293,13 +299,14 @@ def recommandation(request):
             """
             with connection.cursor() as cursor:
                 cursor.execute(updateQuery)
+
             data = score.score_final(username, input_data)
 
-        template = loader.get_template('datamanager/recommandation.html')
-        context = {
-            'record_list' : data,
-        }
-        return HttpResponse(template.render(context, request))
+        # template = loader.get_template('datamanager/recommandation.html')
+        # context = {
+            # 'record_list' : data,
+        # }
+        return HttpResponse(data.head().to_html())
 
 
 #   I am using django built-in login-logout interface, which is legit enough so I think
