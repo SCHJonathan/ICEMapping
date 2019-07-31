@@ -15,4 +15,5 @@ urlpatterns = [
     path('google/', views.google, name='google'),
     path('heat/', views.heat, name='heat'),
     path('<int:geoid>/deleteComment/<str:context>', views.deleteComment, name='deleteComment'),
+    path('search', views.search, name='search'),
 ]

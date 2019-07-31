@@ -1,0 +1,34 @@
+{% extends 'datamanager/base.html' %}
+
+{% load bootstrap_toolkit %}
+{% load bootstrap_pagination %}
+{% block title %}Data List{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+{% endblock link %} 
+
+{% block login %}
+    <form action="{% url 'datamanager:index' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Back to main page</button>
+    </form>    
+{% endblock %}
+
+{% block content %}
+
+
+
+      <table class="table table-striped table-hover">
+        <tr>
+            <td><strong>GeoID</strong></td>
+        </tr>
+        {% for record in records %}
+            <tr>
+                <td><a href="{% url 'datamanager:detail' record %}">{{ record }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+{% endblock %}

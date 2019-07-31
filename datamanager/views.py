@@ -9,7 +9,7 @@ from django.urls import reverse, reverse_lazy
 from django.db import connection
 from django.views import generic
 from .models import Tidychampaign, Rate, Socio, CommentDB
-from .forms import UserInfoForm, CommentForm, recommandationForm
+from .forms import UserInfoForm, CommentForm, recommandationForm, SearchForm
 from .pyScript import score
 import pandas as pd
 
@@ -243,6 +243,7 @@ def newdata(request, username):
 def datalist(request):
     username = request.user.username
     records = Tidychampaign.objects.order_by("geoid")
+    print(type(records))
     paginator = Paginator(records, 10)
     page = request.GET.get('page')
     try:
@@ -339,3 +340,43 @@ class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('datamanager:login')
     template_name = 'datamanager/signup.html'
+
+
+def search(request):
+    if request.method == "GET":
+        template = loader.get_template('datamanager/search.html')
+        form = SearchForm()
+        context = {
+            'form': form,
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        form = SearchForm(request.POST)
+        username = request.user.username
+        geoid = form['geoid'].value()
+        rate = form['rate'].value()
+        with connection.cursor() as cursor:
+            searchQuery = """\
+                        SELECT t.GEOID
+                        FROM tidychampaign t JOIN commentDB r ON t.GEOID = r.GEOID
+                        WHERE t.GEOID LIKE '%s' AND r.rate >= %s
+                        ORDER BY r.rate DESC;
+                        """
+            cursor.execute(searchQuery % (geoid + '%', rate))
+            matchItems = cursor.fetchall()
+        matchItemsFlatten = [item for sublist in matchItems for item in sublist]
+        print(type(matchItemsFlatten))
+        records = matchItemsFlatten
+        paginator = Paginator(records, 10)
+        page = request.GET.get('page')
+        try:
+            show_records = paginator.page(page)
+        except PageNotAnInteger:
+            show_records = paginator.page(1)
+        except EmptyPage:
+            show_records = paginator.page(paginator.num_pages)
+        template = loader.get_template('datamanager/searchResult.html')
+        context = {
+            'records': records,
+        }
+        return HttpResponse(template.render(context, request))

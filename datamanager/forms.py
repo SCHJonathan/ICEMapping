@@ -147,3 +147,17 @@ class recommandationForm(forms.Form):
             ),
             Submit('submit', 'Submit')
         )
+
+
+class SearchForm(forms.Form):
+    geoid = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'GeoID'}))
+    rate = forms.ChoiceField(choices=RATE)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            'geoid',
+            'rate',
+            Submit('submit', 'Submit')
+        )

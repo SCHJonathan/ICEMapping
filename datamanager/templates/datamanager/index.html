@@ -17,10 +17,14 @@
                 {% csrf_token %}
                 <button type="submit">Data List</button>
             </form>
+            <form action="{% url 'datamanager:search' %}" method="GET">
+                {% csrf_token %}
+                <button type="submit">Search</button>
+            </form>     
             <form action="{% url 'datamanager:recommandation' %}" method="GET">
                 {% csrf_token %}
                 <button type="submit">Recommandation</button>
-            </form>     
+            </form>    
         </div>
     {% else %}
         <form action="{% url 'datamanager:login' %}" method="POST">
