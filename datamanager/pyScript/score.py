@@ -1,9 +1,13 @@
 from math import radians, cos, sin, asin, sqrt, log
+from ipywidgets import IntSlider
+from ipywidgets.embed import embed_minimal_html
 import pandas as pd
 import MySQLdb
 import numpy as np
 from sklearn.linear_model import ElasticNet
 from sklearn.model_selection import GridSearchCV
+import gmaps
+
 
 db = MySQLdb.connect(host="127.0.0.1",  
                      user="root",         
@@ -136,4 +140,40 @@ def score_final(input_username, input_data):
     data['score'] = result_prediction(input_username) + data['score']
     data = data.sort_values(by = 'score', ascending=False)
     data['rank'] = range(1, len(data)+1)
+    mark(data)
+    heat(data)
+    bashCommand = "mv export.html datamanager/templates/datamanager/. && mv heat.html datamanager/templates/datamanager/."
+    import subprocess
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)    
     return data  
+
+def mark(score):
+    gmaps.configure(api_key = 'AIzaSyBzozWYI3q9hIHEOh1arRxsMLLzYx83MLQ')
+    champaign = (40.1112, -88.243)
+    fig = gmaps.figure(center=champaign, zoom_level=14)
+
+    index = score.index
+    marker_locations = [
+        (score.lat[index[0]], score.lon[index[0]]),
+        (score.lat[index[1]], score.lon[index[1]]),
+        (score.lat[index[2]], score.lon[index[2]]),
+        (score.lat[index[3]], score.lon[index[3]]),
+        (score.lat[index[4]], score.lon[index[4]]),
+        (score.lat[index[5]], score.lon[index[5]]),
+        (score.lat[index[6]], score.lon[index[6]]),
+        (score.lat[index[7]], score.lon[index[7]]),
+        (score.lat[index[8]], score.lon[index[8]]),
+        (score.lat[index[9]], score.lon[index[9]])   
+    ]
+    markers = gmaps.marker_layer(marker_locations)
+    fig.add_layer(markers)
+    embed_minimal_html('export.html', views=[fig])
+
+def heat(score):
+    gmaps.configure(api_key = 'AIzaSyBzozWYI3q9hIHEOh1arRxsMLLzYx83MLQ')
+    champaign = (40.1112, -88.243)
+    fig = gmaps.figure(center=champaign, zoom_level=13)
+    locations = score[['lat', 'lon']]
+    weights = score['score']
+    fig.add_layer(gmaps.heatmap_layer(locations, weights=weights))
+    embed_minimal_html('heat.html', views=[fig])

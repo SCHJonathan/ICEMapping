@@ -12,5 +12,7 @@ urlpatterns = [
     path('datalist/', views.datalist, name='datalist'),
     path('recommandation', views.recommandation, name='recommandation'),
     path('<int:geoid>/', views.detail, name='detail'),
+    path('google/', views.google, name='google'),
+    path('heat/', views.heat, name='heat'),
     path('<int:geoid>/deleteComment/<str:context>', views.deleteComment, name='deleteComment'),
 ]

@@ -19,8 +19,10 @@
 {% endblock %}
 
 {% block content %}
+    <h2 class='engineDescription'>The search engine is based on a self-updated machine learning algorithm with statistical adjustment of users' preferences.</h2>
     {% if form %}
-        <caption>Default values are set to 'prefer'</caption>
+        <caption>Default values are set to 'prefer'. 
+        </caption>
         <form method="POST">
             {% csrf_token %}
             {% crispy form %}
@@ -51,10 +53,16 @@
                     </tr>
                 {% endfor %}
             </table>
+            <div>
+                <a href="{% url 'datamanager:google' %}"  class="urlsLink">Google Map</a>
+                <a href="{% url 'datamanager:heat' %} " class="urlsLink">Heat Map</a>
+            </div>
         {% else %}
             <h2 class="Recommandation">
                 Sorry! No matching records!!!
             </h2>
         {% endif %}
     {% endif %}
+
+    
 {% endblock %}

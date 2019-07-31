@@ -273,3 +273,15 @@ body{
     text-align: center;
     padding-bottom: 20px;
 }
+
+.urlsLink {
+    margin-right: 30px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.engineDescription {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+}

@@ -308,7 +308,7 @@ def recommandation(request):
 
             data = score.score_final(username, input_data)
 
-            for index, rows in data.head().iterrows(): 
+            for index, rows in data.head(10).iterrows(): 
                 temp_list =[int(rows.GEOID), rows.score, rows.south, rows.north, rows.main, rows.lon, rows.lat] 
                 Row_list.append(temp_list)
             template = loader.get_template('datamanager/recommandation.html')
@@ -317,6 +317,17 @@ def recommandation(request):
             }
         return HttpResponse(template.render(context, request))
 
+def google(request):
+    template = loader.get_template('datamanager/export.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+def heat(request):
+    template = loader.get_template('datamanager/heat.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
 
 #   I am using django built-in login-logout interface, which is legit enough so I think
 #   currently there is no need to change this function.
