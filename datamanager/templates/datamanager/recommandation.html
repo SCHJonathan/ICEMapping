@@ -39,14 +39,14 @@
                 </tr>
                 {% for record in record_list %}
                     <tr>
-                        <td><a href="{% url 'datamanager:detail' record.GEOID %}">{{ record.GEOID }}</a></td>
-                        <td><p>{{ record.score }}</p></td>
-                        <td><p>{{ record.south }}</p></td>
-                        <td><p>{{ record.north }}</p></td>
-                        <td><p>{{ record.main }}</p></td>
-                        <td><p>{{ record.lat }}</p></td>
-                        <td><p>{{ record.lon }}</p></td>
-                        <td><p>{{ record.rank }}</p></td>
+                        <td><a href="{% url 'datamanager:detail' record.0 %}">{{ record.0 }}</a></td>
+                        <td><p>{{ record.1 }}</p></td>
+                        <td><p>{{ record.2 }}</p></td>
+                        <td><p>{{ record.3 }}</p></td>
+                        <td><p>{{ record.4 }}</p></td>
+                        <td><p>{{ record.5 }}</p></td>
+                        <td><p>{{ record.6 }}</p></td>
+                        <td><p>{{ forloop.counter }}</p></td>
                     </tr>
                 {% endfor %}
             </table>

@@ -276,6 +276,7 @@ def recommandation(request):
         form = recommandationForm(request.POST)
         username = request.user.username
         input_data = list(range(13))
+        Row_list =[] 
         if form.is_valid():
             input_data[0] = float(form['population'].value())
             input_data[1] = float(form['white'].value())
@@ -302,11 +303,14 @@ def recommandation(request):
 
             data = score.score_final(username, input_data)
 
-        # template = loader.get_template('datamanager/recommandation.html')
-        # context = {
-            # 'record_list' : data,
-        # }
-        return HttpResponse(data.head().to_html())
+            for index, rows in data.head().iterrows(): 
+                temp_list =[int(rows.GEOID), rows.score, rows.south, rows.north, rows.main, rows.lon, rows.lat] 
+                Row_list.append(temp_list)
+            template = loader.get_template('datamanager/recommandation.html')
+            context = {
+                'record_list' : Row_list,
+            }
+        return HttpResponse(template.render(context, request))
 
 
 #   I am using django built-in login-logout interface, which is legit enough so I think
